@@ -5,6 +5,6 @@ import { reciever } from "../DataSetSql/receiver.js";
 
 const router = Router();
 
-router.route("/upload-dataset").post(upload.single("dataset") , reciever)
+router.route("/upload-dataset").post(upload.single("dataset"), reciever);
 
 export default router;

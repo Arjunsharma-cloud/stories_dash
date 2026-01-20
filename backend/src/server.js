@@ -15,7 +15,7 @@ async function startServer() {
 
     // 2️⃣ CONNECT TO MONGODB
     const connectionInstance = await mongoose.connect(
-      `${process.env.MONGODB_URI}/${process.env.DB_NAME}`
+      `${process.env.MONGODB_URI}/${process.env.DB_NAME}`,
     );
 
     console.log("MongoDB connected");
@@ -25,7 +25,6 @@ async function startServer() {
     app.listen(3001, () => {
       console.log("Server running on port 3001");
     });
-
   } catch (error) {
     console.error("Startup failed:", error);
     throw new ApiError(500, "Server failed to start");

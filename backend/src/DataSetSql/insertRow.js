@@ -1,3 +1,5 @@
+import { client } from "./db.js";
+
 function buildInsertQuery(tableName, schema, rows) {
   const columns = Object.keys(schema);
 

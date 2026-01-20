@@ -1,65 +1,75 @@
-import mongoose , {Schema} from "mongoose";
-import jwt from 'jsonwebtoken';
-import bcrypt from 'bcryptjs';
+// models/Story.js
+import mongoose from "mongoose";
+import BlockSchema from "./subschemas/BlockSchema.js";
 
-const collaboratorSchema = new Schema(
-    {
-        userID:{
-            type:mongoose.Schema.Types.ObjectId,
-            ref:'User',
-            required:true,
-        },
-
-        role:{
-            type:String,
-            enum:['editor' , 'viewer'],
-            required:true,
-        },
-
-        addedAT:{
-            type:Date,
-            default:Date.now
-        }
-    }
-)
-
-const projectSchema = new Schema(
-    {
-        title:{
-            type:String,
-            required:true,
-        },
-
-        description:{
-            type:String,
-        },
-
-        ownerID:{
-            type:mongoose.Schema.Types.ObjectId,
-            ref:'User',
-            required:true,
-        },
-
-        visibility:{
-            type:String,
-            enum:['public' , 'private'],
-            default:'private',
-            required:true,
-        },
-
-        lastModifiedAt:{
-            type:Date,
-            default:Date.now,
-        },
-
-        collaborators:{
-            type:[collaboratorSchema],
-            default:[]
-        },
+const StorySchema = new mongoose.Schema(
+  {
+    authorId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
     },
-    {
-        timestamps:true,
-    }
-)
 
-export const Project = mongoose.model('Project' , projectSchema);
+    title: {
+      type: String,
+      default: "Untitled Story",
+    },
+
+    description: String,
+
+    status: {
+      type: String,
+      enum: ["draft", "published", "archived"],
+      default: "draft",
+    },
+
+    collaborators: [
+      {
+        userId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+        },
+        role: {
+          type: String,
+          enum: ["owner", "editor", "viewer"],
+          default: "editor",
+        },
+      },
+    ],
+
+    canvas: {
+      width: Number,
+      height: Number,
+      background: String,
+      zoom: Number,
+    },
+
+    blocks: [BlockSchema],
+
+    datasets: [
+      {
+        datasetId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Dataset",
+        },
+        usedByBlocks: [String], // block IDs
+      },
+    ],
+
+    slug: {
+      type: String,
+      unique: true,
+      sparse: true,
+    },
+
+    publishedAt: Date,
+
+    version: {
+      type: Number,
+      default: 1,
+    },
+  },
+  { timestamps: true }
+);
+
+export default mongoose.model("Story", StorySchema);

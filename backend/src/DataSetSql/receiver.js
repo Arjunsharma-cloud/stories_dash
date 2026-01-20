@@ -12,6 +12,10 @@ import Papa from "papaparse";
 import XLSX from "xlsx";
 import path from "path";
 import { createTableFromRows } from "./CreateTable.js";
+import { insertRows } from "./insertRow.js";
+import { client } from "./db.js";
+import { insertDatasetMetadata } from "../MetadataSql/Insertquery.js";
+import { finalizeDatasetMetadata } from "../MetadataSql/finalizequery.js";
 
 function sanitizeTableName(filename) {
   return filename
@@ -87,17 +91,39 @@ export const reciever = asyncHandler(async (req, res) => {
     return res.status(400).json({ error: "Unsupported file type" });
   }
 
-  const tablename = sanitizeTableName(file.originalname);
+  const datasetId = randomUUID();
+  const tablename = `ds_${datasetId.replace(/-/g, "")}`;
+  console.log(tablename);
+  const schemaName = "dataset";
+  ////   create the usere and find it here in the
+  // mongodb and tehn give the userId here to
+
+  await insertDatasetMetadata({
+    tablename,
+    userId,
+    datasetName: file.originalname,
+    originalFilename: file.originalname,
+    table,
+    schemaName,
+  });
 
   //connecting the reciever file with insertrow file
   const schema = await createTableFromRows(tablename, parsed.rows);
 
   //insert data
   await insertRows(tablename, schema, parsed.rows);
+
+  await finalizeDatasetMetadata({
+    datasetId,
+    rowCount:parsed.rows.length,
+    columnCount: Object.keys(schema).length
+  })
+
   res.json({
     success: true,
     table: tablename,
     columns: Object.keys(schema),
     rowCount: parsed.rows.length,
+    DatasetId:datasetId
   });
 });
