@@ -162,7 +162,7 @@ const logoutUser = asyncHandler(async(req , res)=>{
     .json(new ApiResponse(200 , {} , "user logged out"))
 })
 
-const profile = asyncHandler(async(req , res)=>{
+constprofile = asyncHandler(async(req , res)=>{
     /**
      * find the user by req.user id 
      * check if there is user or not 

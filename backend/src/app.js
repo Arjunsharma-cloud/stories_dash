@@ -3,6 +3,7 @@ import express from "express";
 import cookieParser from "cookie-parser";
 import userRouter from "./routes/user.route.js";
 import dataRouter from "./routes/data.route.js";
+import editorRouter from "./routes/editor.route.js"
 import dotenv from "dotenv";
 import { upload } from "./middlewares/multer.middleware.js";
 import { reciever } from "./DataSetSql/receiver.js";
@@ -29,5 +30,7 @@ app.use("/api/users", userRouter);
 app.post("/data/upload-dataset", upload.single("dataset"), reciever);
 
 // app.use("/data" , dataRouter);
+
+app.use("/api/stories" , editorRouter);
 
 export { app };
