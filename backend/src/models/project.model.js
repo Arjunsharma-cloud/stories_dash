@@ -1,9 +1,14 @@
 // models/Story.js
 import mongoose from "mongoose";
-import BlockSchema from "./subschemas/BlockSchema.js";
+import BlockSchema from "./blockSchema.model.js";
 
 const StorySchema = new mongoose.Schema(
   {
+
+    _id: {
+      type: String, // ✅ REQUIRED
+  },
+
     authorId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
