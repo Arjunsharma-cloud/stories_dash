@@ -14,6 +14,8 @@ import path from "path";
 import { createTableFromRows } from "./CreateTable.js";
 import { insertRows } from "./insertRow.js";
 import { client } from "./db.js";
+import { randomUUID } from "crypto";
+
 import { insertDatasetMetadata } from "../MetadataSql/Insertquery.js";
 import { finalizeDatasetMetadata } from "../MetadataSql/finalizequery.js";
 
@@ -63,8 +65,10 @@ function parseExcel(filePath) {
 
 //on reciving the file parse it
 export const reciever = asyncHandler(async (req, res) => {
+  console.log("req user: " , req.user)
+  const userID = req.user._id;
   const file = req.file;
-
+  console.log("req.file:", req.file);
   console.log(file.originalname); // example: sales_data.csv
   console.log(file.path); // temp file path
 
@@ -79,7 +83,7 @@ export const reciever = asyncHandler(async (req, res) => {
   }
 
   // ---- EXCEL ----
-  if (
+  else if (
     mime ===
       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ||
     mime === "application/vnd.ms-excel" ||
@@ -99,12 +103,13 @@ export const reciever = asyncHandler(async (req, res) => {
   // mongodb and tehn give the userId here to
 
   await insertDatasetMetadata({
-    tablename,
-    userId,
+    datasetId,
+    userID ,
     datasetName: file.originalname,
     originalFilename: file.originalname,
-    table,
+    tablename,
     schemaName,
+    table:tablename ,
   });
 
   //connecting the reciever file with insertrow file

@@ -7,6 +7,7 @@ import editorRouter from "./routes/editor.route.js"
 import dotenv from "dotenv";
 import { upload } from "./middlewares/multer.middleware.js";
 import { reciever } from "./DataSetSql/receiver.js";
+import { verifyJWT } from "./middlewares/auth.middleware.js";
 
 dotenv.config();
 const app = express();
@@ -27,7 +28,7 @@ app.use("/api/users", userRouter);
 /** do the mounting other wise it will not work
  * and the rest of work is 3 chats back
  */
-app.post("/data/upload-dataset", upload.single("dataset"), reciever);
+app.post("/data/upload-dataset", verifyJWT , upload.single("dataset"), reciever);
 
 // app.use("/data" , dataRouter);
 

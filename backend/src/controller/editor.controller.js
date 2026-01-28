@@ -91,7 +91,7 @@ const updateStory = asyncHandler(async(req , res)=>{
             size: block.size,
             zIndex: block.zIndex,
             locked: block.locked ?? false,
-            content: JSON.stringify(block.content.richText),
+            content: block.content,
           };
         }
 

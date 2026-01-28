@@ -29,24 +29,26 @@ const BlockSchema = new mongoose.Schema(
     locked: { type: Boolean, default: false },
 
     /* TEXT BLOCK */
-    content: String,
+    content: {
+    type: mongoose.Schema.Types.Mixed, // ✅ NOT String
+  },
 
     /* IMAGE BLOCK */
     imageUrl: String,
     caption: String,
 
     /* CHART BLOCK */
-    chartConfig: {
-      datasetId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Dataset",
+      chartConfig: {
+        datasetId: {
+          type: String,
+          defaule:null
+        },
+        chartType: String,
+        xField: String,
+        yField: String,
+        filters: Object,
+        colorScheme: String,
       },
-      chartType: String,
-      xField: String,
-      yField: String,
-      filters: Object,
-      colorScheme: String,
-    },
 
     meta: {
       createdBy: {

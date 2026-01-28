@@ -1,4 +1,5 @@
 //this file is updataind the details of the ffile not the parsed data inside it 
+import { client } from "../DataSetSql/db.js";
 
 export async function insertDatasetMetadata({
   datasetId,
