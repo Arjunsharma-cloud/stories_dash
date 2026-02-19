@@ -1,3 +1,5 @@
+import { client } from "../DataSetSql/db.js"; 
+
 export async function finalizeDatasetMetadata({
   datasetId,
   rowCount,

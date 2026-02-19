@@ -54,8 +54,8 @@ const StorySchema = new mongoose.Schema(
     datasets: [
       {
         datasetId: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Dataset",
+          type: String,
+          required :true
         },
         usedByBlocks: [String], // block IDs
       },

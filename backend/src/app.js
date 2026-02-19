@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 import userRouter from "./routes/user.route.js";
 import dataRouter from "./routes/data.route.js";
 import editorRouter from "./routes/editor.route.js"
+import collabRouter from "./routes/collab.route.js"
 import dotenv from "dotenv";
 import { upload } from "./middlewares/multer.middleware.js";
 import { reciever } from "./DataSetSql/receiver.js";
@@ -33,5 +34,8 @@ app.post("/data/upload-dataset", verifyJWT , upload.single("dataset"), reciever)
 // app.use("/data" , dataRouter);
 
 app.use("/api/stories" , editorRouter);
+
+
+app.use("/api/collab", collabRouter);
 
 export { app };

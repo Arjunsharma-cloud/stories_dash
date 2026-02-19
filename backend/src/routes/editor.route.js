@@ -6,6 +6,8 @@ const router = Router();
 
 router.route("/:storyId").get( verifyJWT , getOrCreatestory);
 
-router.route("/:storyId").patch(verifyJWT , updateStory)
+router.route("/:storyId").patch(verifyJWT , updateStory);
+
+
 
 export default router;

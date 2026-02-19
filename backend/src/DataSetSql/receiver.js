@@ -104,10 +104,10 @@ export const reciever = asyncHandler(async (req, res) => {
 
   await insertDatasetMetadata({
     datasetId,
-    userID ,
+    userId:userID ,
     datasetName: file.originalname,
     originalFilename: file.originalname,
-    tablename,
+    tableName:tablename,
     schemaName,
     table:tablename ,
   });
